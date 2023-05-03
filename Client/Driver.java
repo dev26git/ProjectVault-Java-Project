@@ -1,19 +1,13 @@
 package Client;
 
-import Service.AllUsersService;
-import Service.CurrentUserService;
-import models.Author;
-import models.Project;
-import repos.AuthorRepo;
-import repos.DBUtil;
-import repos.MentorRepo;
-import repos.ProjectRepo;
-
+import models.*;
+import repos.*;
+import Service.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class TestDriver {
+public class Driver {
     public static void main(String[] args) throws SQLException, InterruptedException {
 
         Connection conn = DBUtil.getConnection();
@@ -40,7 +34,9 @@ public class TestDriver {
             System.out.println("\t\t\t\t 8. Update Project Abstract");
             System.out.println("\t\t\t\t 9. Add New Mentor");
             System.out.println("\t\t\t\t10. Change Project Mentor");
-            System.out.println("\t\t\t\t11. Delete a Project");
+            System.out.println("\t\t\t\t11. View All Mentors");
+            System.out.println("\t\t\t\t12. View All Projects");
+            System.out.println("\t\t\t\t13. Delete a Project");
             System.out.println("\t\t\t\t 0. End Program");
             System.out.println("\t\t\t-----------------------------------");
             System.out.print("\t\t\t\tEnter your choice (0-11): ");
@@ -71,21 +67,25 @@ public class TestDriver {
                 }
 
                 case 3 -> {
-                    System.out.print("Enter Project Title:");
-                    String title = sc.nextLine();
-                    System.out.print("Enter Project Abstract:");
-                    String Abstract = sc.nextLine();
-                    System.out.print("Enter Mentor ID:");
-                    int mentorID = sc.nextInt();
-                    sc.nextLine();
-                    if(currentUserService.insertProject(title, Abstract, mentorID)){
-                        System.out.println("Project Saved.");
+                    if(checkLogin(currentUserService)) {
+                        System.out.print("Enter Project Title:");
+                        String title = sc.nextLine();
+                        System.out.print("Enter Project Abstract:");
+                        String Abstract = sc.nextLine();
+                        System.out.print("Enter Mentor ID:");
+                        int mentorID = sc.nextInt();
+                        sc.nextLine();
+                        if (currentUserService.insertProject(title, Abstract, mentorID)) {
+                            System.out.println("Project Saved.");
+                        }
                     }
                 }
 
                 case 4 -> {
-                    for(Project p:currentUserService.getCurrentUsersProjects()){
-                        System.out.println(p);
+                    if(checkLogin(currentUserService)) {
+                        for (Project p : currentUserService.getCurrentUsersProjects()) {
+                            System.out.println(p);
+                        }
                     }
                 }
 
@@ -105,24 +105,28 @@ public class TestDriver {
                 }
 
                 case 7 -> {
-                    System.out.print("Enter Project ID:");
-                    int id = sc.nextInt();
-                    sc.nextLine();
-                    System.out.print("Enter new title:");
-                    String newTitle = sc.nextLine();
-                    if(currentUserService.updateTitle(newTitle, id)){
-                        System.out.print("Title Updated.");
+                    if(checkLogin(currentUserService)) {
+                        System.out.print("Enter Project ID:");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+                        System.out.print("Enter new title:");
+                        String newTitle = sc.nextLine();
+                        if (currentUserService.updateTitle(newTitle, id)) {
+                            System.out.print("Title Updated.");
+                        }
                     }
                 }
 
                 case 8 -> {
-                    System.out.print("Enter Project ID:");
-                    int id = sc.nextInt();
-                    sc.nextLine();
-                    System.out.print("Enter new abstract:");
-                    String newAbstract = sc.nextLine();
-                    if(currentUserService.updateTitle(newAbstract, id)){
-                        System.out.println("Abstract Updated.");
+                    if(checkLogin(currentUserService)) {
+                        System.out.print("Enter Project ID:");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+                        System.out.print("Enter new abstract:");
+                        String newAbstract = sc.nextLine();
+                        if (currentUserService.updateTitle(newAbstract, id)) {
+                            System.out.println("Abstract Updated.");
+                        }
                     }
                 }
 
@@ -137,25 +141,43 @@ public class TestDriver {
                 }
 
                 case 10 -> {
-                    System.out.print("Enter Project ID:");
-                    int id = sc.nextInt();
-                    System.out.print("Enter new Mentor ID:");
-                    int newMentorID = sc.nextInt();
-                    sc.nextLine();
-                    if(currentUserService.updateMentorId(newMentorID, id)){
-                        System.out.println("Mentor ID Updated.");
+                    if(checkLogin(currentUserService)) {
+                        System.out.print("Enter Project ID:");
+                        int id = sc.nextInt();
+                        System.out.print("Enter new Mentor ID:");
+                        int newMentorID = sc.nextInt();
+                        sc.nextLine();
+                        if (currentUserService.updateMentorId(newMentorID, id)) {
+                            System.out.println("Mentor ID Updated.");
+                        }
                     }
                 }
 
                 case 11 -> {
-                    System.out.print("Enter Project ID to delete:");
-                    int id = sc.nextInt();
-                    sc.nextLine();
-                    System.out.print("Do you really want to delete the project? (y/n):");
-                    String confirmation = sc.next();
-                    if(confirmation.equals("y")) {
-                        if (currentUserService.deleteProject(id)) {
-                            System.out.println("Project Deleted.");
+                    if(checkLogin(currentUserService)) {
+                        for (Mentor m : mentorRepo.getAllMentors()) {
+                            System.out.println(m);
+                        }
+                    }
+                }
+
+                case 12 -> {
+                    for(Project p: projectRepo.getAllProjects()) {
+                        System.out.println(p);
+                    }
+                }
+
+                case 13 -> {
+                    if(checkLogin(currentUserService)) {
+                        System.out.print("Enter Project ID to delete:");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+                        System.out.print("Do you really want to delete the project? (y/n):");
+                        String confirmation = sc.next();
+                        if (confirmation.equals("y")) {
+                            if (currentUserService.deleteProject(id)) {
+                                System.out.println("Project Deleted.");
+                            }
                         }
                     }
                 }
@@ -170,5 +192,14 @@ public class TestDriver {
 
             Thread.sleep(1000);
         }
+    }
+
+
+    private static boolean checkLogin(CurrentUserService currentUserService){
+        if(currentUserService == null) {
+            System.out.println("Please login to perform this action.");
+            return false;
+        }
+        return true;
     }
 }
