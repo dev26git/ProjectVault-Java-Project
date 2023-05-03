@@ -1,0 +1,57 @@
+create database Project_Repository_Database;
+
+use Project_Repository_Database;
+
+create table mentors(
+	mentorID int AUTO_INCREMENT,
+	mentorName varchar(50) NOT NULL,
+	mentorEmail varchar(100) NOT NULL UNIQUE,
+	PRIMARY KEY (mentorID)
+	);
+
+
+create table authors (
+	authorID int AUTO_INCREMENT,
+	authorName varchar(50) NOT NULL,
+	authorEmail varchar(100) NOT NULL UNIQUE,
+	PRIMARY KEY (authorID)
+	);
+
+create table projects(
+	projectID int AUTO_INCREMENT,
+    	projectTitle varchar(100) NOT NULL,
+    	projectAbstract varchar(1000),
+	authorID int,
+    	mentorID int,
+	PRIMARY KEY (projectID),
+	FOREIGN KEY (mentorID) REFERENCES mentors(mentorID),
+	FOREIGN KEY (authorID) REFERENCES authors(authorID)
+	);
+
+
+
+INSERT INTO mentors (mentorName, mentorEmail)
+VALUES
+("Shruti Patil", "shruti.patil@gmail.com"),
+("Pooja Kamat", "pooja.kamat@gmail.com"),
+("Om Mishra", "om.mishra@gmail.com"),
+("Shivali Wagle", "shivali.wagle@gmail.com"),
+("Rahee Walambe", "rahee.walambe@gmail.com");
+
+
+insert into authors (authorName, authorEmail)
+VALUES
+("Devansh Singh", "devansh.singh.btech2021@sitpune.edu.in"),
+("Harsh Gandhi", "harsh.gandhi.btech2021@sitpune.edu.in"),
+("Tanvi Jatkar", "tanvi.jatkar.btech2021@sitpune.edu.in"),
+("Hemakshi Bhatnagar", "hemakshi.bhatnagar.btech2021@sitpune.edu.in"),
+("Arva Shah", "arva.shah.btech2021@sitpune.edu.in");
+
+
+INSERT INTO projects (projectTitle,projectAbstract,authorID,mentorID)
+VALUES
+("SatellightSight", "A classical Machine Learning approach to automate waste detection in satellite images. We use texture analysis of satellite images to differentiate between waste and non-waste areas. A binary classification model helps us classify regions containing waste dumps.", 1, 1),
+("EEG Signal Classification", "A research focussed on classifying the events from the EEG data. With several ensemble and machine learning models we are able to classify the resting and cognitive states of the subject.", 2, 1),
+("Urban Planning using Geospatial Data", "A project focussed on analysing and optimising the geospatial infrastructure to facilitate urban planning", 3, 2),
+("Leaf disease detection", "A solid deep learning approach to identify diseases in the leaf by using VGG-16 a model akin to Convolution neural network", 5, 3),
+("Garbage Volume Detection", "Analysing the garbage volumes generated in local areas on a day to day basis and deploying waste management forces through government bodies. The model is built on Midas and yolo algorithm and deployed using Flutter.", 4, 4);
