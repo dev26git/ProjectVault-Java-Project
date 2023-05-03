@@ -36,11 +36,9 @@ public class Mentor {
 
     @Override
     public String toString() {
-        return "Mentor{" +
-                "mentorID=" + mentorID +
-                ", mentorName='" + mentorName + '\'' +
-                ", mentorEmail='" + mentorEmail + '\'' +
-                '}';
+        return "Mentor ID:" + mentorID +
+                "\nName:" + mentorName +
+                "\nEmail=" + mentorEmail;
     }
 
     public void setMentorID(int mentorID) {

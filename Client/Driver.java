@@ -5,6 +5,7 @@ import repos.*;
 import Service.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Driver {
@@ -92,8 +93,14 @@ public class Driver {
                 case 5 -> {
                     System.out.println("Enter keyword to search: ");
                     String keyword = sc.nextLine();
-                    for(Project p: allUsersService.searchKeyword(keyword)){
-                        System.out.println(p);
+                    List<Project> projectList= allUsersService.searchKeyword(keyword);
+                    if(projectList.size() == 0){
+                        System.out.println("No Projects found.");
+                    }
+                    else {
+                        for (Project p : projectList) {
+                            System.out.println(p);
+                        }
                     }
                 }
 
@@ -101,7 +108,13 @@ public class Driver {
                     System.out.println("Enter Project ID to search:");
                     int projectID = sc.nextInt();
                     sc.nextLine();
-                    System.out.println(projectRepo.getProjectById(projectID));
+                    Project p = projectRepo.getProjectById(projectID);
+                    if(p == null){
+                        System.out.println("Given Project ID not found.");
+                    }
+                    else{
+                        System.out.println(p);
+                    }
                 }
 
                 case 7 -> {
@@ -154,10 +167,9 @@ public class Driver {
                 }
 
                 case 11 -> {
-                    if(checkLogin(currentUserService)) {
-                        for (Mentor m : mentorRepo.getAllMentors()) {
-                            System.out.println(m);
-                        }
+                    for (Mentor m : mentorRepo.getAllMentors()) {
+                        System.out.println(m);
+                        System.out.println();
                     }
                 }
 
