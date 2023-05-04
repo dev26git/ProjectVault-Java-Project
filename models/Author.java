@@ -10,8 +10,7 @@ public class Author {
         this.authorEmail = authorEmail;
     }
 
-    public Author() {
-    }
+    public Author() {}
 
     public int getAuthorID() {
         return authorID;

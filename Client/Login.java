@@ -13,7 +13,7 @@ public class Login
         System.out.print("Enter your email: ");
         String input = scanner.nextLine();
 
-        String csvFile = "/Users/sinner/intellij_projects/Project_Repository_Portal/src/TestClient/user_details.csv";
+        String csvFile = "/Users/sinner/intellij_projects/Project_Repository_Portal/src/Client/user_details.csv";
         String line;
         String email = "";
         String username = "";
