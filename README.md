@@ -1,3 +1,5 @@
+<img src="https://github.com/dev26git/ProjectVault-Java-Project/blob/main/ProjectVault%20Logo.jpg" width="479" height="160">
+
 # ProjectVault: A Project Repository Portal
 
 ## Abstract
