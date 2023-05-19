@@ -8,7 +8,7 @@ In colleges when we want to start a new project, we need some initial guidance. 
 ## Usage
 1. Fork the repo.
 2. Copy and execute the SQL commands in the SQL_statements.txt file in MYSQL.
-3. Change the username, password and url in repos -> DBUtil.java.
+3. Change the username, password and url in repos -> DBUtil.java to match details of your database.
 4. Run main method of Client -> Driver.java.
 
 ## Modules
